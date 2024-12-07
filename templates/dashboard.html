@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Financial Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <nav class="dashboard-nav">
+            <h2>Welcome, {{ user[1] }}</h2>
+            <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+        </nav>
+        
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <h3>Financial Overview</h3>
+                <p>Monthly Income: ${{ user[4] }}</p>
+                <p>Risk Tolerance: {{ user[5] }}</p>
+                <p>Goals: {{ user[6] }}</p>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>Add Expense</h3>
+                <form method="POST" action="{{ url_for('add_expense') }}">
+                    <div class="form-group">
+                        <label for="category">Category:</label>
+                        <select id="category" name="category" required>
+                            <option value="food">Food</option>
+                            <option value="transport">Transport</option>
+                            <option value="utilities">Utilities</option>
+                            <option value="entertainment">Entertainment</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Amount:</label>
+                        <input type="number" id="amount" name="amount" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date:</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                    <button type="submit" class="btn">Add Expense</button>
+                </form>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>Add Saving</h3>
+                <form method="POST" action="{{ url_for('add_saving') }}">
+                    <div class="form-group">
+                        <label for="amount">Amount:</label>
+                        <input type="number" id="amount" name="amount" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date:</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="goal">Saving Goal:</label>
+                        <input type="text" id="goal" name="goal" required>
+                    </div>
+                    <button type="submit" class="btn">Add Saving</button>
+                </form>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>Recent Expenses</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for expense in expenses %}
+                            <tr>
+                                <td>{{ expense[2] }}</td>
+                                <td>${{ expense[3] }}</td>
+                                <td>{{ expense[4] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="dashboard-card">
+                <h3>Recent Savings</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th>Goal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for saving in savings %}
+                            <tr>
+                                <td>${{ saving[2] }}</td>
+                                <td>{{ saving[3] }}</td>
+                                <td>{{ saving[4] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

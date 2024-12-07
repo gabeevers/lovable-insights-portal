@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Management App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Welcome to Financial Management</h1>
+            <nav>
+                <a href="{{ url_for('login') }}" class="btn">Login</a>
+                <a href="{{ url_for('register') }}" class="btn">Register</a>
+            </nav>
+        </header>
+        <main>
+            <section class="hero">
+                <h2>Take Control of Your Finances</h2>
+                <p>Track expenses, set savings goals, and manage your financial future.</p>
+            </section>
+            <section class="features">
+                <div class="feature">
+                    <h3>Expense Tracking</h3>
+                    <p>Monitor your spending habits</p>
+                </div>
+                <div class="feature">
+                    <h3>Savings Goals</h3>
+                    <p>Set and track financial goals</p>
+                </div>
+                <div class="feature">
+                    <h3>Financial Insights</h3>
+                    <p>Get personalized financial advice</p>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
