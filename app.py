@@ -1,11 +1,30 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import sqlite3
-from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 import os
+import hashlib
+import binascii
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
+
+# Custom password hashing function using PBKDF2
+def generate_password_hash(password):
+    salt = hashlib.sha256(os.urandom(60)).hexdigest().encode('ascii')
+    pwdhash = hashlib.pbkdf2_hmac('sha512', password.encode('utf-8'), 
+                                 salt, 100000)
+    pwdhash = binascii.hexlify(pwdhash)
+    return (salt + pwdhash).decode('ascii')
+
+def check_password_hash(stored_password, provided_password):
+    salt = stored_password[:64]
+    stored_password = stored_password[64:]
+    pwdhash = hashlib.pbkdf2_hmac('sha512', 
+                                 provided_password.encode('utf-8'), 
+                                 salt.encode('ascii'), 
+                                 100000)
+    pwdhash = binascii.hexlify(pwdhash).decode('ascii')
+    return pwdhash == stored_password
 
 # Database initialization
 def init_db():
